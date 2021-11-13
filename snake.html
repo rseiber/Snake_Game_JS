@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Snake Game</title>
+</head>
+<body style="background-color:black ;">
+
+	<canvas id="stage" width="600"	height="600"></canvas>
+	<style type="text/css">
+		canvas {
+			padding: 0;
+			margin: auto;
+			display: block;
+			width: 800 px;
+			height: 600 px;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
+	</style>
+	<script type="text/javascript">
+		
+		window.onload = function() {
+
+			const stage = document.getElementById('stage');
+			const context = stage.getContext('2d');
+			document.addEventListener("keydown", keypush);
+			setInterval(game, 85);
+
+			const speed = 1;
+
+			var vx = vy = 0;
+			var px = 10;
+			var py = 15;
+			var grid = 30;
+			var gridsize = 20;
+			var ax = ay = 15;
+
+			var trail = [];
+			tail = 5;
+
+
+			function game() {
+				px += vx;
+				py += vy;
+				if (px < 0) {
+					px = gridsize - 1;
+				}
+				if (px > gridsize - 1) {
+					px = 0;
+				}
+				if (py < 0) {
+					py = gridsize - 1;
+				}
+				if (py > gridsize - 1) {
+					py = 0;
+				}
+
+				context.fillStyle = '#111111';
+				context.fillRect(0,0, stage.width, stage.height);
+
+				context.fillStyle = 'red';
+				context.fillRect(ax*grid, ay*grid, grid, grid);
+
+				context.fillStyle = 'green';
+				for (var i = 0; i < trail.length; i++) {
+					context.fillRect(trail[i].x*grid, trail[i].y*grid, grid - 1,grid - 1);
+					if (trail[i].x == px && trail[i].y == py && tail > 5) 
+					{
+						vx = vy = 0;
+						tail = 5;
+						ax = Math.floor(Math.random()*gridsize);
+						ay = Math.floor(Math.random()*gridsize);
+						window.alert("GAME OVER!!")
+					}
+				}
+
+				trail.push({x:px,y:py })
+				while (trail.length > tail) {
+					trail.shift();
+				}
+
+				if (ax == px && ay == py ) {
+					tail++;
+					ax = Math.floor(Math.random()*gridsize);
+					ay = Math.floor(Math.random()*gridsize);
+				}
+
+
+			}
+
+			function keypush(event) {
+
+				switch	(event.keyCode) {
+					case 37: //left
+						vx = -speed;
+						vy = 0;
+						break;
+					case 38: //UP
+						vx = 0;
+						vy = -speed;
+						break;
+					case 39: //RIGHT
+						vx = speed;
+						vy = 0;
+						break;
+					case 40: //DOWN
+						vx = 0;
+						vy = speed;
+						break;
+					default:
+
+						break
+				}
+
+			}
+
+		}
+
+	</script>
+
+</body>
+</html>
