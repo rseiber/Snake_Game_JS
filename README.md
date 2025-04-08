@@ -1,2 +1,2 @@
-# Snake_Game_JS
+# Snake Game JS
 snake game website
